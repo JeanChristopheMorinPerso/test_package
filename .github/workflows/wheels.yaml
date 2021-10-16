@@ -5,8 +5,7 @@ on:
     branches:
     - master
   release:
-    types:
-    - published
+    types: [created, published]
 
 jobs:
   # wheel:
@@ -31,8 +30,10 @@ jobs:
     # needs:
     # - wheel
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'release' }}
+    # if: ${{ github.event_name == 'release' }}
     steps:
     - run: |
         echo ${{ github.event_name }}
-        echo ${{ github.event.release.draft }}
+        echo ${{ github.event.action }}
+        # echo ${{ github.event_name }}
+        # echo ${{ github.event.release.draft }}
