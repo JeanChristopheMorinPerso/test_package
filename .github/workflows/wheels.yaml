@@ -9,29 +9,30 @@ on:
     - published
 
 jobs:
-  wheel:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
+  # wheel:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v2
 
-    - uses: actions/setup-python@v2
+  #   - uses: actions/setup-python@v2
 
-    - name: Install pypa/build
-      run: python -m pip install build --user
+  #   - name: Install pypa/build
+  #     run: python -m pip install build --user
 
-    - name: Generate sdist and wheel
-      run: python -m build -s -w .
+  #   - name: Generate sdist and wheel
+  #     run: python -m build -s -w .
 
-    - uses: actions/upload-artifact@v2
-      with:
-        name: wheels
-        path: dist
+  #   - uses: actions/upload-artifact@v2
+  #     with:
+  #       name: wheels
+  #       path: dist
 
   release:
-    needs:
-    - wheel
+    # needs:
+    # - wheel
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'release' }}
     steps:
     - run: |
         echo ${{ github.event_name }}
+        echo ${{ github.event.release.draft }}
