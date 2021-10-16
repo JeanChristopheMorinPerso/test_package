@@ -1,0 +1,24 @@
+name: pubish
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr:
+        description: 'Pull request number for which to release. Required if "commit" is not specified.'
+        required: false
+      commit:
+        description: 'Commit for which to release. Required if "pr" is not specified.'
+        required: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: dawidd6/action-download-artifact@v2
+      with:
+        workflow: wheels.yaml
+        pr: ${{ github.event.inputs.pr }}
+        commit: ${{ github.event.inputs.commit }}
+        workflow_conclusion: success
+        name: wheels  # Artifact name to download
+        path: dist
