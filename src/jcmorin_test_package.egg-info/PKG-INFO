@@ -1,0 +1,20 @@
+Metadata-Version: 2.1
+Name: jcmorin-test-package
+Version: 0.0.1.dev1
+Summary: Test package to test release workflows to PyPI
+Home-page: https://github.com/JeanChristopheMorinPerso/test_package
+Author: Jean-Christophe Morin
+Author-email: jean_christophe_morin@hotmail.com
+License: UNKNOWN
+Project-URL: Bug Tracker, https://github.com/JeanChristopheMorinPerso/test_package/issues
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+
+# test_package
+
+This is a test package used to test different release workflows to PyPI.
+
+
