@@ -3,28 +3,44 @@ name: pubish
 on:
   workflow_dispatch:
     inputs:
-      pr:
-        description: 'Pull request number for which to release. Required if "commit" is not specified.'
-        required: false
       commit:
-        description: 'Commit for which to release. Required if "pr" is not specified.'
-        required: false
+        description: 'Commit for which to release.'
+        required: true
+      test:
+        description: 'Upload to test.pypi.org. Values: true, false'
+        required: true
+        default: 'true'
 
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/github-script@v3
-      if: ${{ github.event.inputs.pr == '' }} && ${{ github.event.inputs.commit == '' }}
+    - name: Print inputs
+      run: |
+        echo 'commit: ${{ github.event.inputs.commit }}'
+        echo 'test  : ${{ github.event.inputs.test }}'
+
+    - name: Verify arguments
+      uses: actions/github-script@v5
       with:
         script: |
-          core.setFailed('You need to specify one of "pr" or "commit"!')
+          const isTest = '${{ github.event.inputs.test }}'
+          if (!['true', 'false'].includes(isTest)) {
+            core.setFailed(`Only "true" and "false" are acceptable for the "test" parameter! Value received is: "${isTest}"`)
+          }
 
-    - uses: dawidd6/action-download-artifact@v2
-      with:
-        workflow: wheels.yaml
-        pr: ${{ github.event.inputs.pr }}
-        commit: ${{ github.event.inputs.commit }}
-        workflow_conclusion: success
-        name: wheels  # Artifact name to download
-        path: dist
+    # - uses: dawidd6/action-download-artifact@v2
+    #   with:
+    #     workflow: wheels.yaml
+    #     commit: ${{ github.event.inputs.commit }}
+    #     workflow_conclusion: success
+    #     name: wheels  # Artifact name to download
+    #     path: dist
+
+    # - name: Publish distribution 📦 to Test PyPI
+    #   if: ${{ github.event.inputs.test == 'true' }}
+    #   uses: pypa/gh-action-pypi-publish@release/v1
+    #   with:
+    #     user: __token__
+    #     password: ${{ secrets.PYPI_API_TOKEN }}
+    #     repository_url: https://test.pypi.org/legacy/
