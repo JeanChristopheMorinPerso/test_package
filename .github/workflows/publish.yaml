@@ -1,15 +1,8 @@
 name: pubish
 
 on:
-  workflow_dispatch:
-    inputs:
-      commit:
-        description: 'Commit for which to release.'
-        required: true
-      test:
-        description: 'Upload to test.pypi.org. Values: true, false'
-        required: true
-        default: 'true'
+  release:
+    types: [published]
 
 jobs:
   release:
@@ -17,30 +10,5 @@ jobs:
     steps:
     - name: Print inputs
       run: |
-        echo 'commit: ${{ github.event.inputs.commit }}'
-        echo 'test  : ${{ github.event.inputs.test }}'
-
-    - name: Verify arguments
-      uses: actions/github-script@v5
-      with:
-        script: |
-          const isTest = '${{ github.event.inputs.test }}'
-          if (!['true', 'false'].includes(isTest)) {
-            core.setFailed(`Only "true" and "false" are acceptable for the "test" parameter! Value received is: "${isTest}"`)
-          }
-
-    # - uses: dawidd6/action-download-artifact@v2
-    #   with:
-    #     workflow: wheels.yaml
-    #     commit: ${{ github.event.inputs.commit }}
-    #     workflow_conclusion: success
-    #     name: wheels  # Artifact name to download
-    #     path: dist
-
-    # - name: Publish distribution 📦 to Test PyPI
-    #   if: ${{ github.event.inputs.test == 'true' }}
-    #   uses: pypa/gh-action-pypi-publish@release/v1
-    #   with:
-    #     user: __token__
-    #     password: ${{ secrets.PYPI_API_TOKEN }}
-    #     repository_url: https://test.pypi.org/legacy/
+        echo 'sha: ${{ github.sha }}'
+        echo 'ref  : ${{ github.ref }}'
